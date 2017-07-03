@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
 import './DCFL.css'
 import GoogleLogin from 'react-google-login'
 import API from './API'
