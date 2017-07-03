@@ -33,11 +33,10 @@ class Login extends Component {
     return (
         <div className="Dcfl">
           <div className="Dcfl-header">
-            <img src={logo} className="Dcfl-logo" alt="logo" />
-            Welcome to the DCFL
+            <h1>Welcome to the DCFL</h1>
           </div>
           <GoogleLogin
-            clientId="679951802637-11f5hauooelrmm35m65tfb4gsqaapso4.apps.googleusercontent.com"
+            clientId="679951802637-1elfqih4qe8hqa1r8sflql5vqaafonj4.apps.googleusercontent.com"
             buttonText="Login"
             onSuccess={this.response}
             onFailure={this.response}
