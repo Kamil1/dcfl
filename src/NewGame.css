@@ -1,0 +1,72 @@
+.registerContainer {
+    height: 100vh;
+    width: 100vw;
+}
+
+@media(orientation: landscape) {
+    .registerBlack {
+        height: 100vh;
+        width: 50vw;
+        float: left;
+    }
+
+    .registerYellow {
+        height: 100vh;
+        width: 50vw;
+        float: right;
+    }
+}
+
+@media(orientation: portrait) {
+    .registerBlack {
+        height: 50vh;
+        width: 100vw;
+        vertical-align: top;
+    }
+
+    .registerYellow {
+        height: 50vh;
+        width: 100vw;
+        vertical-align: bottom;
+    }
+}
+
+.registerBlack {
+    background-color: black;
+}
+
+.registerYellow {
+    background-color: yellow;
+}
+
+.playersContainer {
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.playerImage {
+    border-width: 5px;
+    border-color: blueviolet;
+    border-style: solid;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.confirmedPlayerImage {
+    border-width: 8px;
+    border-color: green;
+    border-style: solid;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
