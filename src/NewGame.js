@@ -21,7 +21,7 @@ class NewGame extends Component {
     }
 
     componentWillMount() {
-        this.connection = new WebSocket("ws://localhost:3333/register/" + Authentication.getSub())
+        this.connection = new WebSocket("wss://https://dcfl-server.herokuapp.com/register/" + Authentication.getSub())
         this.connection.onmessage = msg => {
             var obj = JSON.parse(msg.data)
             console.log("DATA")
