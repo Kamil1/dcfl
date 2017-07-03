@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3333';
+const BASE_URL = 'https://dcfl-server.herokuapp.com';
 
 export default function API(auth, timeout = 1000) {
   return axios.create({
