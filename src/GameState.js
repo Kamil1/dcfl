@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './GameState.css'
-import './GameState'
 import Authentication from './Authentication'
 import Popup from 'react-popup'
 import Prompt from './Prompt'
