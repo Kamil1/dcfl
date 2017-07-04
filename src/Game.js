@@ -16,7 +16,7 @@ class Game extends Component {
             header: noGameHeader
         }
         this.sub = this.props.route ? this.props.route.sub : Authentication.getSub()
-        this.connection = new WebSocket("ws://dcfl-server.herokuapp.com/register/" + this.sub)
+        this.connection = new WebSocket("wss://dcfl-server.herokuapp.com/register/" + this.sub)
     }
 
     onGameStart = (matchTitle) => {
