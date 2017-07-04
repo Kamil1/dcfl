@@ -27,7 +27,7 @@ class Login extends Component {
 
   render = () => {
     if (Authentication.loggedIn()) {
-        return <Redirect to="/newgame"/>
+        return <Redirect to="/newgame" sub={Authentication.getSub()}/>
     }
     return (
         <div className="Dcfl">

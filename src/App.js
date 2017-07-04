@@ -5,13 +5,13 @@ import {
   Switch
 } from 'react-router-dom'
 import Login from './Login'
-import NewGame from './NewGame'
+import Game from './Game'
 
 const DCFLRouter = () => (
   <Router>
     <Switch>
       <Route exact path="/" component={Login}/>
-      <Route exact path="/newgame" component={NewGame}/>
+      <Route exact path="/newgame" component={Game}/>
     </Switch>
   </Router>
 )

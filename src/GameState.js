@@ -1,59 +1,106 @@
 import React, { Component } from 'react'
-import './NewGame.css'
-import './Popup.css'
+import './GameState.css'
 import Authentication from './Authentication'
 import Popup from 'react-popup'
+import Prompt from './Prompt'
 
-class NewGame extends Component {
+const newGame = {
+    blackPlayer1: {sub: "", picture: "", confirmed: false},
+    blackPlayer2: {sub: "", picture: "", confirmed: false},
+    yellowPlayer1: {sub: "", picture: "", confirmed: false},
+    yellowPlayer2: {sub: "", picture: "", confirmed: false},
+    blackTeam: {id: 0, city: "", name: ""},
+    yellowTeam: {id: 0, city: "", name: ""},
+    blackScore: 0,
+    yellowScore: 0,
+    userSide: null,
+    gameStarted: false,
+    userConfirmed: false,
+    getConfirmation: false,
+    gettingConfirmation: false,
+    newTeam: false,
+    error: ""
+}
 
-    constructor() {
-        super()
-        this.state = {
-            blackPlayer1: {sub: "", picture: "", confirmed: false},
-            blackPlayer2: {sub: "", picture: "", confirmed: false},
-            yellowPlayer1: {sub: "", picture: "", confirmed: false},
-            yellowPlayer2: {sub: "", picture: "", confirmed: false},
-            userSide: "",
-            getConfirmation: false,
-            newTeam: false,
-            error: ""
-        }
+class GameState extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = newGame
     }
 
-    componentWillMount() {
-        this.connection = new WebSocket("wss://dcfl-server.herokuapp.com/register/" + Authentication.getSub())
-        this.connection.onmessage = msg => {
+    componentDidMount() {
+        this.props.connection.onmessage = msg => {
             var obj = JSON.parse(msg.data)
-            console.log("DATA")
+            console.log("=== SERVER RESPONSE ===")
             console.log(obj)
+
+            // Last game ended.
+            if (this.state.gameStarted && !obj.game_started) {
+                this.setState(newGame)
+            }
+
             var bp1 = obj.black_player_1 ? obj.black_player_1 : this.state.blackPlayer1
             var bp2 = obj.black_player_2 ? obj.black_player_2 : this.state.blackPlayer2
             var yp1 = obj.yellow_player_1 ? obj.yellow_player_1 : this.state.yellowPlayer1
             var yp2 = obj.yellow_player_2 ? obj.yellow_player_2 : this.state.yellowPlayer2
+
             var userSide = ""
-            if (bp1.sub === Authentication.getSub || bp2.sub === Authentication.getSub) userSide = "black"
-            if (yp1.sub === Authentication.getSub || yp2.sub === Authentication.getSub) userSide = "yellow"
-            var requiresConfirmation = (userSide ==="black" && bp1.sub != "" && bp2.sub != "") ||
-                                       (userSide ==="yellow" && yp1.sub != "" && yp2.sub != "")
+            var userPlayer
+            if (bp1.sub === this.props.sub) {userPlayer = bp1; userSide = "black"}
+            if (bp2.sub === this.props.sub) {userPlayer = bp2; userSide = "black"}
+            if (yp1.sub === this.props.sub) {userPlayer = yp1; userSide = "yellow"}
+            if (yp2.sub === this.props.sub) {userPlayer = yp2; userSide = "yellow"}
+
+            var requiresConfirmation = (userSide === "black" &&
+                                        bp1.sub !== "" &&
+                                        bp2.sub !== "" &&
+                                        !userPlayer.confirmed) ||
+                                       (userSide === "yellow" &&
+                                        yp1.sub !== "" &&
+                                        yp2.sub !== "" &&
+                                        !userPlayer.confirmed)
             var newTeam = false
-            if (userSide === "black" && bp1.confirmed && bp2.confirmed && obj.name === "") newTeam = true
-            if (userSide === "yellow" && yp1.confirmed && yp2.confirmed && obj.name === "") newTeam = true
+            if (bp1.sub === this.props.sub && bp1.confirmed && bp2.confirmed && this.isEmptyTeam(obj.black_team)) newTeam = true
+            if (yp1.sub === this.props.sub && yp1.confirmed && yp2.confirmed && this.isEmptyTeam(obj.yellow_team)) newTeam = true
             this.setState({
                 blackPlayer1: bp1,
                 blackPlayer2: bp2,
                 yellowPlayer1: yp1,
                 yellowPlayer2: yp2,
+                blackTeam: obj.black_team,
+                yellowTeam: obj.yellow_team,
+                blackScore: obj.black_score,
+                yellowScore: obj.yellow_score,
                 userSide: userSide,
+                gameStarted: obj.game_started,
+                userConfirmed: this.state.userConfirmed,
                 getConfirmation: requiresConfirmation,
+                gettingConfirmation: this.state.gettingConfirmation,
                 newTeam: newTeam,
                 error: obj.error
             })
 
-            if (this.state.error && this.state.error != "") {
+            if (this.state.gameStarted) {
+                var matchTitle = 
+                    this.state.black_team.city +
+                    " " +
+                    this.state.black_team.name +
+                    " vs. " +
+                    this.state.yellow_team.city +
+                    " " + 
+                    this.state.yellow_team.name
+                this.props.onGameStart(matchTitle)
+            }
+
+            if (this.state.error && this.state.error !== "") {
                 Popup.alert(this.state.error)
             }
             
-            if (this.state.getConfirmation) {
+            if (this.state.getConfirmation && !this.state.gettingConfirmation) {
+                var state = this.state
+                state.gettingConfirmation = true
+                this.setState(state)
                 Popup.create({
                     title: "Confirm",
                     content: "Ready to play?",
@@ -62,6 +109,10 @@ class NewGame extends Component {
                         right: [{
                             text: "Ready",
                             action: (popup) => {
+                                var state = this.state
+                                state.gettingConfirmation = false
+                                state.userConfirmed = true
+                                this.setState(state)
                                 this.sendConfirmation()
                                 popup.close()
                             }
@@ -72,10 +123,10 @@ class NewGame extends Component {
 
             if (this.state.newTeam) {
                 Popup.plugins().prompt((city, name) => {
-                    this.connection.send(JSON.stringify({
+                    this.props.connection.send(JSON.stringify({
                         action: "register team",
-                        player_1: this.state.userSide == "black" ? this.state.blackPlayer1.sub : this.state.yellowPlayer1.sub,
-                        player_2: this.state.userSide == "black" ? this.state.blackPlayer2.sub : this.state.yellowPlayer2.sub,
+                        player_1: this.state.userSide === "black" ? this.state.blackPlayer1.sub : this.state.yellowPlayer1.sub,
+                        player_2: this.state.userSide === "black" ? this.state.blackPlayer2.sub : this.state.yellowPlayer2.sub,
                         city: city,
                         name: name,
                         side: this.state.userSide
@@ -85,45 +136,50 @@ class NewGame extends Component {
         }
     }
 
+    isEmptyTeam = (team) => {
+        return team.id === 0 && team.city === "" || team.name === ""
+    }
+
     registerPlayer = (side) => {
-        this.connection.send(JSON.stringify({
+        this.props.connection.send(JSON.stringify({
             action: "register game",
-            sub: Authentication.getSub(),
+            sub: this.props.sub,
             side: side
         }))
     }
 
     sendBlack = () => {
-        this.registerPlayer("black")
+        console.log("sending black")
+        if (!this.state.userConfirmed) {
+            this.registerPlayer("black")
+        }
     }
 
     sendYellow = () => {
-        this.registerPlayer("yellow")
+        console.log("sending yellow")
+        if (!this.state.userConfirmed) {
+            this.registerPlayer("yellow")
+        }
     }
 
     sendConfirmation = () => {
-        this.connection.send(JSON.stringify({
+        this.props.connection.send(JSON.stringify({
             action: "confirm",
-            sub: Authentication.getSub(),
+            sub: this.props.sub,
             side: this.state.userSide
         }))
     }
 
-    logout = () => {
-        Authentication.logout()
-        this.forceUpdate()
-    }
-
     render() {
+        console.log("=== APP STATE ===")
+        console.log(this.state)
         if (!Authentication.loggedIn()) {
-            console.log("redirect")
             return Authentication.loginRedirect()
         }
         return (
-            <div className="registerContainer">
-                <Popup/>
-                <h2 onClick={this.logout}>Logout</h2>
+            <div>
                 <div className="registerBlack" onClick={this.sendBlack}>
+                    <div className="scoreTop blackScore">{this.state.gameStarted ? this.state.blackScore : false}</div>
                     <div className="playersContainer">
                         <img
                             src={this.state.blackPlayer1.picture === "" ? "http://via.placeholder.com/96x96" : this.state.blackPlayer1.picture}
@@ -136,8 +192,10 @@ class NewGame extends Component {
                             className={this.state.blackPlayer2.confirmed ? "confirmedPlayerImage" : "playerImage"}
                         />
                     </div>
+                    <div className="scoreTop"></div>
                 </div>
                 <div className="registerYellow" onClick={this.sendYellow}>
+                    <div className="scoreTop"></div>
                     <div className="playersContainer">
                         <img
                             src={this.state.yellowPlayer1.picture === "" ? "http://via.placeholder.com/96x96" : this.state.yellowPlayer1.picture}
@@ -150,44 +208,15 @@ class NewGame extends Component {
                             className={this.state.yellowPlayer2.confirmed ? "confirmedPlayerImage" : "playerImage"}
                         />
                     </div>
+                    <div className="scoreTop yellowScore">{this.state.gameStarted ? this.state.yellowScore : false}</div>
                 </div>                
             </div>
         )
     }
 
 }
-export default NewGame
+export default GameState
 
-/** The prompt content component */
-class Prompt extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value: this.props.defaultValue
-        };
-
-        this.onChange = (e) => this._onChange(e);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.value !== this.state.value) {
-            this.props.onChange(this.state.value);
-        }
-    }
-
-    _onChange(e) {
-        let value = e.target.value;
-
-        this.setState({value: value});
-    }
-
-    render() {
-        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
-    }
-}
-
-/** Prompt plugin */
 Popup.registerPlugin('prompt', function(callback) {
     var cityValue = null
     var cityChange = (city) => {

@@ -1,0 +1,136 @@
+@media(orientation: landscape) {
+    .registerBlack {
+        /* 68px = toolbar height */
+        --calculated-height: -moz-calc(100vh - 68px);
+        --calculated-height: -webkit-calc(100vh - 68px);
+        --calculated-height: -o-calc(100vh - 68px);
+        --calculated-height: calc(100vh - 68px);
+        height: var(--calculated-height);
+        width: 50vw;
+        float: left;
+    }
+
+    .registerYellow {
+        /* 68px = toolbar height */
+        --calculated-height: -moz-calc(100vh - 68px);
+        --calculated-height: -webkit-calc(100vh - 68px);
+        --calculated-height: -o-calc(100vh - 68px);
+        --calculated-height: calc(100vh - 68px);
+        height: var(--calculated-height);
+        width: 50vw;
+        float: right;
+    }
+}
+
+@media(orientation: portrait) {
+    .registerBlack {
+        /* 30px = 1/2 toolbar height */
+        --calculated-height: -moz-calc(50vh - 30px);
+        --calculated-height: -webkit-calc(50vh - 30px);
+        --calculated-height: -o-calc(50vh - 30px);
+        --calculated-height: calc(50vh - 30px);
+        height: var(--calculated-height);
+        width: 100vw;
+        vertical-align: top;
+    }
+
+    .registerYellow {
+        /* 30px = 1/2 toolbar height */
+        --calculated-height: -moz-calc(50vh - 30px);
+        --calculated-height: -webkit-calc(50vh - 30px);
+        --calculated-height: -o-calc(50vh - 30px);
+        --calculated-height: calc(50vh - 30px);
+        height: var(--calculated-height);
+        width: 100vw;
+        vertical-align: bottom;
+    }
+}
+
+.registerBlack {
+    background-color: black;
+    cursor: pointer;
+}
+
+.registerYellow {
+    background-color: yellow;
+    cursor: pointer;
+}
+
+.playersContainer {
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    display: inline-block;
+}
+
+.playerImage {
+    border-width: 6px;
+    border-color: blueviolet;
+    border-style: solid;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    /* 68px = toolbar height */
+    --calculated-top: -moz-calc(50% + 68px);
+    --calculated-top: -webkit-calc(50% + 68px);
+    --calculated-top: -o-calc(50% + 68px);
+    --calculated-top: calc(50% + 68px);
+    top: var(--calculated-top);
+    --calculated-transform: -moz-calc(var(--calculated-top) * -1);
+    --calculated-transform: -webkit-calc(var(--calculated-top) * -1);
+    --calculated-transform: -o-calc(var(--calculated-top) * -1);
+    --calculated-transform: calc(var(--calculated-top) * -1);
+    transform: translateY(var(--calculated-transform));}
+
+.confirmedPlayerImage {
+    border-width: 6px;
+    border-color: green;
+    border-style: solid;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    /* 68px = toolbar height */
+    --calculated-top: -moz-calc(50% + 68px);
+    --calculated-top: -webkit-calc(50% + 68px);
+    --calculated-top: -o-calc(50% + 68px);
+    --calculated-top: calc(50% + 68px);
+    top: var(--calculated-top);
+    --calculated-transform: -moz-calc(var(--calculated-top) * -1);
+    --calculated-transform: -webkit-calc(var(--calculated-top) * -1);
+    --calculated-transform: -o-calc(var(--calculated-top) * -1);
+    --calculated-transform: calc(var(--calculated-top) * -1);
+    transform: translateY(var(--calculated-transform));}
+
+.timerContainer {
+    top: calc(50vh + 30px);
+    left: calc(50vw - 77px);
+    position: fixed;
+}
+
+.scoreTop {
+    width: 25%;
+    height: 25%;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+    top: calc(50% - 68px);
+    font-size: calc(25vh - 68px);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
+    display: inline-block;
+}
+
+.blackScore {
+    color: yellow;
+}
+
+.yellowScore {
+    color: black;
+}
