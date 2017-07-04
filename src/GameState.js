@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './GameState.css'
+import './GameState'
 import Authentication from './Authentication'
 import Popup from 'react-popup'
 import Prompt from './Prompt'
@@ -137,7 +138,7 @@ class GameState extends Component {
     }
 
     isEmptyTeam = (team) => {
-        return team.id === 0 && team.city === "" || team.name === ""
+        return team.id === 0 && team.city === "" && team.name === ""
     }
 
     registerPlayer = (side) => {
