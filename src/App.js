@@ -13,8 +13,7 @@ const DCFLRouter = () => (
     <Switch>
       <Route exact path="/" component={Login}/>
       <Route exact path="/newgame" component={Game}/>
-      <Route path="/.well-known/acme-challenge" children={(props) => <pre>sh3NY_CNzKcxotSuN6Omk5H55u3-Uwjw6aSg1qlKhs8.DWnELZAorWbgbvcEow4o_OwQXvajVpfjKve8ESdWonQ</pre>}/>
-      <Route children={(props) => <pre>sh3NY_CNzKcxotSuN6Omk5H55u3-Uwjw6aSg1qlKhs8.DWnELZAorWbgbvcEow4o_OwQXvajVpfjKve8ESdWonQ</pre>}/>
+      <Route component={SSL}/>
     </Switch>
   </Router>
 )
