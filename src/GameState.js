@@ -35,6 +35,11 @@ class GameState extends Component {
             console.log("=== SERVER RESPONSE ===")
             console.log(obj)
 
+             if (obj.broadcast && obj.broadcast !== "") {
+                Popup.alert(this.state.broadcast)
+                return
+            }
+
             // Last game ended.
             if (this.state.gameStarted && !obj.game_started) {
                 this.setState(newGame)
@@ -77,35 +82,39 @@ class GameState extends Component {
                 userConfirmed: this.state.userConfirmed,
                 getConfirmation: requiresConfirmation,
                 gettingConfirmation: this.state.gettingConfirmation,
-                newTeam: newTeam,
-                error: obj.error
+                newTeam: newTeam
             })
 
             if (this.state.gameStarted) {
                 var matchTitle = 
-                    this.state.black_team.city +
+                    this.state.blackTeam.city +
                     " " +
-                    this.state.black_team.name +
+                    this.state.blackTeam.name +
                     " vs. " +
-                    this.state.yellow_team.city +
+                    this.state.yellowTeam.city +
                     " " + 
-                    this.state.yellow_team.name
+                    this.state.yellowTeam.name
                 this.props.onGameStart(matchTitle)
-            }
-
-            if (this.state.error && this.state.error !== "") {
-                Popup.alert(this.state.error)
             }
             
             if (this.state.getConfirmation && !this.state.gettingConfirmation) {
                 var state = this.state
                 state.gettingConfirmation = true
-                this.setState(state)
                 Popup.create({
                     title: "Confirm",
                     content: "Ready to play?",
                     buttons: {
-                        left: ['Cancel'],
+                        left: [{
+                            text: "Cancel",
+                            action: (popup) => {
+                                var state = this.state
+                                state.gettingConfirmation = false
+                                state.userConfirmed = false
+                                this.setState(state)
+                                this.registerPlayer(this.state.userSide)
+                                popup.close()
+                            }
+                        }],
                         right: [{
                             text: "Ready",
                             action: (popup) => {
@@ -178,6 +187,7 @@ class GameState extends Component {
         }
         return (
             <div>
+                <Popup closeBtn={false} closeOnOutsideClick={false}/>
                 <div className="registerBlack" onClick={this.sendBlack}>
                     <div className="scoreTop blackScore">{this.state.gameStarted ? this.state.blackScore : false}</div>
                     <div className="playersContainer">
