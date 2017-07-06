@@ -1,22 +1,22 @@
 @media(orientation: landscape) {
     .registerBlack {
         /* 68px = toolbar height */
-        --calculated-height: -moz-calc(100vh - 68px);
-        --calculated-height: -webkit-calc(100vh - 68px);
-        --calculated-height: -o-calc(100vh - 68px);
-        --calculated-height: calc(100vh - 68px);
-        height: var(--calculated-height);
+        --height: -moz-calc(100vh - 68px);
+        --height: -webkit-calc(100vh - 68px);
+        --height: -o-calc(100vh - 68px);
+        --height: calc(100vh - 68px);
+        height: var(--height);
         width: 50vw;
         float: left;
     }
 
     .registerYellow {
         /* 68px = toolbar height */
-        --calculated-height: -moz-calc(100vh - 68px);
-        --calculated-height: -webkit-calc(100vh - 68px);
-        --calculated-height: -o-calc(100vh - 68px);
-        --calculated-height: calc(100vh - 68px);
-        height: var(--calculated-height);
+        --height: -moz-calc(100vh - 68px);
+        --height: -webkit-calc(100vh - 68px);
+        --height: -o-calc(100vh - 68px);
+        --height: calc(100vh - 68px);
+        height: var(--height);
         width: 50vw;
         float: right;
     }
@@ -25,22 +25,22 @@
 @media(orientation: portrait) {
     .registerBlack {
         /* 30px = 1/2 toolbar height */
-        --calculated-height: -moz-calc(50vh - 30px);
-        --calculated-height: -webkit-calc(50vh - 30px);
-        --calculated-height: -o-calc(50vh - 30px);
-        --calculated-height: calc(50vh - 30px);
-        height: var(--calculated-height);
+        --height: -moz-calc(50vh - 30px);
+        --height: -webkit-calc(50vh - 30px);
+        --height: -o-calc(50vh - 30px);
+        --height: calc(50vh - 30px);
+        height: var(--height);
         width: 100vw;
         vertical-align: top;
     }
 
     .registerYellow {
         /* 30px = 1/2 toolbar height */
-        --calculated-height: -moz-calc(50vh - 30px);
-        --calculated-height: -webkit-calc(50vh - 30px);
-        --calculated-height: -o-calc(50vh - 30px);
-        --calculated-height: calc(50vh - 30px);
-        height: var(--calculated-height);
+        --height: -moz-calc(50vh - 30px);
+        --height: -webkit-calc(50vh - 30px);
+        --height: -o-calc(50vh - 30px);
+        --height: calc(50vh - 30px);
+        height: var(--height);
         width: 100vw;
         vertical-align: bottom;
     }
@@ -76,16 +76,16 @@
     vertical-align: middle;
     position: relative;
     /* 68px = toolbar height */
-    --calculated-top: -moz-calc(50% + 68px);
-    --calculated-top: -webkit-calc(50% + 68px);
-    --calculated-top: -o-calc(50% + 68px);
-    --calculated-top: calc(50% + 68px);
-    top: var(--calculated-top);
-    --calculated-transform: -moz-calc(var(--calculated-top) * -1);
-    --calculated-transform: -webkit-calc(var(--calculated-top) * -1);
-    --calculated-transform: -o-calc(var(--calculated-top) * -1);
-    --calculated-transform: calc(var(--calculated-top) * -1);
-    transform: translateY(var(--calculated-transform));}
+    --top: -moz-calc(50% + 68px);
+    --top: -webkit-calc(50% + 68px);
+    --top: -o-calc(50% + 68px);
+    --top: calc(50% + 68px);
+    top: var(--top);
+    --transform: -moz-calc(var(--top) * -1);
+    --transform: -webkit-calc(var(--top) * -1);
+    --transform: -o-calc(var(--top) * -1);
+    --transform: calc(var(--top) * -1);
+    transform: translateY(var(--transform));}
 
 .confirmedPlayerImage {
     border-width: 6px;
@@ -95,16 +95,16 @@
     vertical-align: middle;
     position: relative;
     /* 68px = toolbar height */
-    --calculated-top: -moz-calc(50% + 68px);
-    --calculated-top: -webkit-calc(50% + 68px);
-    --calculated-top: -o-calc(50% + 68px);
-    --calculated-top: calc(50% + 68px);
-    top: var(--calculated-top);
-    --calculated-transform: -moz-calc(var(--calculated-top) * -1);
-    --calculated-transform: -webkit-calc(var(--calculated-top) * -1);
-    --calculated-transform: -o-calc(var(--calculated-top) * -1);
-    --calculated-transform: calc(var(--calculated-top) * -1);
-    transform: translateY(var(--calculated-transform));}
+    --top: -moz-calc(50% + 68px);
+    --top: -webkit-calc(50% + 68px);
+    --top: -o-calc(50% + 68px);
+    --top: calc(50% + 68px);
+    top: var(--top);
+    --transform: -moz-calc(var(--top) * -1);
+    --transform: -webkit-calc(var(--top) * -1);
+    --transform: -o-calc(var(--top) * -1);
+    --transform: calc(var(--top) * -1);
+    transform: translateY(var(--transform));}
 
 .timerContainer {
     top: calc(50vh + 30px);
